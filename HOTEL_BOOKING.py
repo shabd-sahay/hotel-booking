@@ -66,24 +66,9 @@ class HotelReservationApp:
         i12 = Label(bf3, text="Email us: reserveanantara@anantara.com", bg="white")
         i12.pack(side="left")
 
-        i3 = Button(self.frame, text="SIGN UP", bg="white", command=self.sign_up)
-        i3.pack(side=RIGHT)
-
-        i4 = Button(self.frame, text="LOGIN", bg="white", command=self.login)
-        i4.pack(side=RIGHT)
         
-# Creating Signup page
-
-    def sign_up(self):
-        c = Toplevel()
-        c.geometry("550x550")
-        c.title("SIGN UP")
-        c.configure(bg="#F0F0FF")
         
-        i45 = Label(c, text="ANANTARA", bg="#83838B", fg="white", font=('Dotum', 25))
-        i46 = Label(c, text="Hotels-Resorts-Spas", fg="white", bg="#83838B", font=('Dotum', 12))
-        i45.pack(fill="x")
-        i46.pack(fill="x")
+# # Creating Signup page
 
         # Declaration of input values
         Firstname = StringVar()
@@ -123,43 +108,31 @@ class HotelReservationApp:
             conn.commit()
             messagebox.showinfo('Information','Sign-in successfully')
 
-        c1 = Label(c, text="First Name*").place(x=120, y=100)
-        c2 = Label(c, text="Last Name*").place(x=120, y=150)
-        c3 = Label(c, text="Phone Number*").place(x=120, y=200)
-        c4 = Label(c, text="Email*").place(x=120, y=250)
-        c5 = Label(c, text="Create Password*").place(x=120, y=300)
-        c6 = Label(c, text="Confirm Password*").place(x=120, y=350)
+        c1 = Label(self.root, text="First Name*").place(x=120, y=300)
+        c2 = Label(self.root, text="Last Name*").place(x=120, y=350)
+        c3 = Label(self.root, text="Phone Number*").place(x=120, y=400)
+        c4 = Label(self.root, text="Email*").place(x=120, y=450)
+        c5 = Label(self.root, text="Create Password*").place(x=120, y=500)
+        c6 = Label(self.root, text="Confirm Password*").place(x=120, y=550)
         
-        ce1 = Entry(c, textvar=Firstname, bd=3)
-        ce1.place(x=260, y=100)
-        ce2 = Entry(c, textvar=LastName, bd=3)
-        ce2.place(x=260, y=150)
-        ce3 = Entry(c, textvar=phoneNumber, bd=3)
-        ce3.place(x=260, y=200)
-        ce4 = Entry(c, textvar=Email, bd=3)
-        ce4.place(x=260, y=250)
-        ce5 = Entry(c, textvar=createpassword, bd=3,show='*')
-        ce5.place(x=260, y=300)
-        ce6 = Entry(c, textvar=confirmpassword, bd=3,show='*')
-        ce6.place(x=260, y=350)
-        
-#SignIn Submit Button
-        ce3 = Button(c, text="SUBMIT", command=database, font=('Dotum', 10))
+        ce1 = Entry(self.root, textvar=Firstname, bd=3)
+        ce1.place(x=280, y=300)
+        ce2 = Entry(self.root, textvar=LastName, bd=3)
+        ce2.place(x=280, y=350)
+        ce3 = Entry(self.root, textvar=phoneNumber, bd=3)
         ce3.place(x=280, y=400)
+        ce4 = Entry(self.root, textvar=Email, bd=3)
+        ce4.place(x=280, y=450)
+        ce5 = Entry(self.root, textvar=createpassword, bd=3,show='*')
+        ce5.place(x=280, y=500)
+        ce6 = Entry(self.root, textvar=confirmpassword, bd=3,show='*')
+        ce6.place(x=280, y=550)
         
-
-    def login(self):
-        b = Tk()
-        b.geometry("330x355")
-        b.title("LOGIN")
-        b.configure(bg="#F0F0FF")
-
-        # Labelling and packing
-        i47 = Label(b, text="ANANTARA", bg="#83838B", fg="white", font=('Dotum', 25))
-        i48 = Label(b, text="Hotels-Resorts-Spas", fg="white", bg="#83838B", font=('Dotum', 12))
-        i47.pack(fill="x")
-        i48.pack(fill="x")
-
+    #SignIn Submit Button
+        ce3 = Button(self.root, text="SUBMIT", command=database, font=('Dotum', 10))
+        ce3.place(x=280, y=600)
+        
+#login
         def LOGin():
             x = e1.get()
             y = e2.get()
@@ -184,24 +157,31 @@ class HotelReservationApp:
             else:
                 messagebox.showerror('error', "Invalid Email or Password")
 
-        L1 = Label(b, text="Email").place(x=50, y=80)
-        L2 = Label(b, text="Password").place(x=50, y=140)
-        e1 = Entry(b, bd=3)
-        e1.place(x=120, y=80)
-        e2 = Entry(b, bd=3, show='*')
-        e2.place(x=120, y=140)
+        L1 = Label(self.root, text="Email").place(x=1320, y=380)
+        L2 = Label(self.root, text="Password").place(x=1320, y=440)
+        e1 = Entry(self.root, bd=3)
+        e1.place(x=1420, y=380)
+        e2 = Entry(self.root, bd=3, show='*')
+        e2.place(x=1420, y=440)
 
         # Login page submit button
-        ce20 = Button(b, text="SUBMIT", command=LOGin)
-        ce20.place(x=150, y=200)
+        ce20 = Button(self.root, text="SUBMIT", command=LOGin)
+        ce20.place(x=1450, y=500)
 
 
 
-    def hotel_log(self, previous_window=None):
-        d = Toplevel()
+    def hotel_log(self, previous_window=1):
+        # Clear existing widgets from main window
+        for widget in self.root.winfo_children():
+            widget.destroy()
+        
+        # Reuse main window
+        d = self.root
         d.geometry("1600x800")
         d.title("Anantara Fares Maldives Resort")
         d.configure(bg="#F0F0FF")
+
+
 # Label Widget
         b = Label(d, bg="#F0F0FF", bd=2, relief=RIDGE)
         b.place(relx=0.032, rely=0.1, relheight=0.85, relwidth=0.45)
@@ -415,17 +395,27 @@ class HotelReservationApp:
             ce600 = Button(f, text="<<", command=lambda: self.hotel_log(f), font=('Dotum', 10))
             ce600.pack(side="left")
 
-            def go_back(self, previous_window=None):
-                if previous_window:
-                    previous_window.lift()
+            def go_back(self):
+                # Clear current view and recreate login screen
+                for widget in self.root.winfo_children():
+                    widget.destroy()
+                self.create_main_window()
+
         
 
 
         def book():
-            e = Toplevel()
-            e.geometry("1920x1080")
+            # Clear existing widgets
+            for widget in self.root.winfo_children():
+                widget.destroy()
+            
+            # Reuse main window for booking
+            e = self.root
+            e.geometry("1600x800")
             e.title("BOOKING PAGE")
             e.configure(bg="#F0F0FF")
+
+
             
             # Labelling and packing
             i51 = Label(e, text="ANANTARA", bg="#83838B", fg="white", font=('Dotum', 25))
@@ -461,7 +451,7 @@ class HotelReservationApp:
                     cursor.execute('INSERT INTO company(NIGHTS,ADULTS,ROOMS,CHECK_IN,CHECK_OUT)values(?,?,?,?,?)', (nights, adults, rooms,check_in_date,check_out_date))
                 conn.commit()
                 messagebox.showinfo('Information', 'BOOKED SUCCESSFULLY')
-
+                self.hotel_log()
               
 
             L51 = Label(e, text="NIGHT(S)").place(x=620, y=200)
@@ -545,14 +535,3 @@ class HotelReservationApp:
         ce60.pack(side="right")
 if __name__ == "__main__":
     app = HotelReservationApp()
-
-
-
-
-
-
-
-
-
-
-        
