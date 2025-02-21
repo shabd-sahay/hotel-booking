@@ -497,7 +497,7 @@ class HotelReservationApp:
                 selected_date = cal.get_date()
                 date_var.set(selected_date)
                  # Calendar Widget
-            cal = Calendar(e, selectmode="day", year=2023, month=8, day=3)
+            cal = Calendar(e, selectmode="day", year=2025, month=2, day=21)
             cal.place(x=300,y=200)
 
             select_date_button = Button(e, text="SELECT DATE", command=get_selected_date)
