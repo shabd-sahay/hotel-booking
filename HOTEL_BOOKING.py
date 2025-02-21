@@ -153,7 +153,9 @@ class HotelReservationApp:
 
             if user:
                 messagebox.showinfo('message', "Login Successful")
+                self.current_user = user  # Store logged-in user
                 self.hotel_log()  # Call the hotel_log function
+
             else:
                 messagebox.showerror('error', "Invalid Email or Password")
 
@@ -168,7 +170,10 @@ class HotelReservationApp:
         ce20 = Button(self.root, text="SUBMIT", command=LOGin)
         ce20.place(x=1450, y=500)
 
-
+    def logout(self) :
+        for widgets in self.root.winfo_children():
+            widgets.destroy()
+        self.create_main_window()
 
     def hotel_log(self, previous_window=1):
         # Clear existing widgets from main window
@@ -191,8 +196,19 @@ class HotelReservationApp:
 # Labelling and packing Room 1
         i10 = Label(d, text="ANANTARA", bg="#83838B", fg="white", font=('Dotum', 25))
         i11 = Label(d, text="Maldives Resort", fg="white", bg="#83838B", font=('Dotum', 12))
+        welcome_label = Label(d, text=f"Hello {self.current_user[0]} {self.current_user[1]}", 
+                                bg="#83838B", fg="white", font=('Dotum', 14))
         i10.pack(fill="x")
         i11.pack(fill="x")
+        welcome_label.pack(fill="x")
+        
+        # Add logout and order list buttons
+        logout_btn = Button(d, text="Logout", command=self.logout, bg="white")
+        logout_btn.place(x=1500, y=20)
+        order_list_btn = Button(d, text="Order List", command=self.show_orders, bg="white")
+        order_list_btn.place(x=1400, y=20)
+
+
 
         i30 = Label(d, text="BEACH POOL VILLA", font=('Dotum', 22, 'bold'))
         i30.place(x=430, y=120)
@@ -447,8 +463,12 @@ class HotelReservationApp:
                 conn = sqlite3.connect("SELF.db")
                 with conn:
                     cursor = conn.cursor()
-                    cursor.execute('CREATE TABLE IF NOT EXISTS company(NIGHTS INTEGER,ADULTS INTEGER,ROOMS INTEGER,CHECK_IN text,CHECK_OUT text)')
-                    cursor.execute('INSERT INTO company(NIGHTS,ADULTS,ROOMS,CHECK_IN,CHECK_OUT)values(?,?,?,?,?)', (nights, adults, rooms,check_in_date,check_out_date))
+                    cursor.execute('CREATE TABLE IF NOT EXISTS Company1(NIGHTS INTEGER,ADULTS INTEGER,ROOMS INTEGER,CHECK_IN text,CHECK_OUT text,ROOM_TYPE text)')
+
+                    room_type = "Beach Pool Villa"  # This should be dynamic based on selection
+                    cursor.execute('INSERT INTO Company1(NIGHTS,ADULTS,ROOMS,CHECK_IN,CHECK_OUT,ROOM_TYPE)values(?,?,?,?,?,?)', 
+                                (nights, adults, rooms,check_in_date,check_out_date,room_type))
+
                 conn.commit()
                 messagebox.showinfo('Information', 'BOOKED SUCCESSFULLY')
                 self.hotel_log()
@@ -521,7 +541,12 @@ class HotelReservationApp:
             update_checkout_button.place(x=720,y=470)
 
                # Confirm Booking Button
+            # Add order list button
+            order_list_btn = Button(e, text="View Orders", command=self.show_orders, font=('Dotum', 14, 'bold'))
+            order_list_btn.place(x=900, y=600)
+            
             insert_button = Button(e, text="CONFIRM", command=lambda:database(NIGHTS.get(), ADULTS.get(), ROOMS.get(), checkin_entry.get(), checkout_entry.get()), font=('Dotum', 14, 'bold')) 
+
             insert_button.place(x=700, y=600)
 
         ce30 = Button(d, text="BOOK NOW", command=book, font=('Dotum', 14, 'bold'))
@@ -533,5 +558,27 @@ class HotelReservationApp:
 
         ce60 = Button(d, text=">>",command=hotel_log_A,font=('Dotum', 10))
         ce60.pack(side="right")
+    def show_orders(self):
+        order_window = Toplevel()
+        order_window.title("Order List")
+        order_window.geometry("800x600")
+        
+        conn = sqlite3.connect("SELF.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Company1")
+        orders = cursor.fetchall()
+        
+        columns = ("Nights", "Adults", "Rooms", "Check-in", "Check-out", "Room Type")
+        tree = ttk.Treeview(order_window, columns=columns, show="headings")
+        
+        for col in columns:
+            tree.heading(col, text=col)
+            
+        for order in orders:
+            tree.insert("", "end", values=order)
+            
+        tree.pack(expand=True, fill="both")
+        conn.close()
+
 if __name__ == "__main__":
     app = HotelReservationApp()
