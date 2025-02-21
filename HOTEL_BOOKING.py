@@ -20,17 +20,32 @@ class HotelReservationApp:
 #Creating the image background
         
     def create_main_window(self):
-        self.frame = Frame(self.root, width=700, height=500)
-        self.frame.pack()
+        # self.frame = Frame(self.root ,height=2000, width= 2000)
+        # self.frame.pack()
+        # self.frame.place(anchor='center', relx=0.5, rely=0.5)
+        # self.img = ImageTk.PhotoImage(Image.open("anantaraJPG.jpg"))
+        # self.label = Label(self.frame, image=self.img)
+        # self.label.pack()
+        self.frame = Frame(self.root)
         self.frame.place(anchor='center', relx=0.5, rely=0.5)
-        self.img = ImageTk.PhotoImage(Image.open("anantaraJPG.jpg"))
-        self.label = Label(self.frame, image=self.img)
-        self.label.pack()
+
+        # Get window size
+        win_width = self.root.winfo_screenwidth()
+        win_height = self.root.winfo_screenheight()
+
+        # Open and resize image
+        image = Image.open("anantaraJPG.jpg")
+        image = image.resize((win_width, win_height), Image.LANCZOS)  # Resize to fit the screen
+        self.bg_image = ImageTk.PhotoImage(image)  # Keep a reference
+
+        # Set the label with the background image
+        self.label = Label(self.root, image=self.bg_image)
+        self.label.place(x=0, y=0, relwidth=1, relheight=1) 
         
 # Labelling and packing
 
-        i1 = Label(self.root, text="ANANTARA", bg="#83838B", fg="white", font=('Dotum', 25))
-        i2 = Label(self.root, text="Hotels-Resorts-Spas", fg="white", bg="#83838B", font=('Dotum', 12))
+        i1 = Label(self.root, text="ANANTARA", bg="#6f564c", fg="white", font=('Dotum', 25),)
+        i2 = Label(self.root, text="Hotels-Resorts-Spas", fg="white", bg="#6f564c", font=('Dotum', 12))
         i1.pack(fill="x")
         i2.pack(fill="x")
         
